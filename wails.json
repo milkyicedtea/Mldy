@@ -1,0 +1,16 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "GoMldy",
+  "outputfilename": "GoMldy",
+  "info": {
+    "productVersion": "0.1"
+  },
+  "frontend:install": "bun i",
+  "frontend:build": "bun run build",
+  "frontend:dev:watcher": "bun run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "milkyicedtea",
+    "email": "81954613+milkyicedtea@users.noreply.github.com"
+  }
+}
