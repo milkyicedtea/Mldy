@@ -25,7 +25,7 @@ export function Home() {
     } catch (error: any) {
       setDownloading(false)
       // console.log(error.response.data)
-      alert(`${await error.response}`)
+      alert(`${await error}`)
       console.error(error)
     }
   }

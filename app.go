@@ -42,7 +42,7 @@ func (a *App) startup(ctx context.Context) {
 		return
 	}
 
-	appDir := filepath.Join(userDir, "Mldy Downloads")
+	appDir := filepath.Join(userDir, "Mldy")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		log.Println("Error creating app directory:", err)
 		return
@@ -76,6 +76,7 @@ func (a *App) startup(ctx context.Context) {
 			log.Println("Error downloading FFmpeg:", err)
 		}
 	}
+	log.Printf("a.ffmpegExecutable is going to be: %s\n", ffmpegPath)
 	a.ffmpegExecutable = ffmpegPath
 
 	log.Println("Using yt-dlp at:", ytdlpPath)
@@ -170,7 +171,8 @@ func (a *App) Download(video VideoRequest) (string, error) {
 	}
 
 	//log.Println("ffmpeg cmd")
-	ffmpegCmd := exec.Command("ffmpeg",
+	log.Printf("a.ffmpegExecutable: %s\n", a.ffmpegExecutable)
+	ffmpegCmd := exec.Command(a.ffmpegExecutable,
 		"-i", "pipe:0",
 		"-vn",
 		"-ab", "320k",

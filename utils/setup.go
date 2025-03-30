@@ -96,6 +96,8 @@ func DownloadFFmpeg(appDir, destPath string) error {
 	}
 
 	// Extract the archive
+	log.Println("Successfully downloaded ffmpeg to", destPath)
+	log.Println("Extracting ffmpeg archive...")
 	if strings.HasSuffix(archiveName, ".zip") {
 		// Extract ZIP
 		cmd = exec.Command("powershell", "-Command",
