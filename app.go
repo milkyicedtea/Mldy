@@ -18,9 +18,10 @@ import (
 
 // App struct
 type App struct {
-	ctx              context.Context
-	ytdlpExecutable  string
-	ffmpegExecutable string
+	ctx               context.Context
+	ytdlpExecutable   string
+	ffmpegExecutable  string
+	dependenciesReady bool
 }
 
 // NewApp creates a new App application struct
@@ -32,8 +33,11 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-
-	a.ctx = ctx
+	a.dependenciesReady = false
+	defer func() {
+		a.dependenciesReady = true
+		log.Println("Dependencies ready:", a.dependenciesReady)
+	}()
 
 	// Set up a default path where we'll store yt-dlp
 	userDir, err := os.UserConfigDir()
@@ -85,6 +89,10 @@ func (a *App) startup(ctx context.Context) {
 
 type VideoRequest struct {
 	Url string `json:"url"`
+}
+
+func (a *App) AreDependenciesReady() bool {
+	return a.dependenciesReady
 }
 
 func (a *App) Download(video VideoRequest) (string, error) {
