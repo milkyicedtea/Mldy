@@ -42,7 +42,7 @@ func (a *App) startup(ctx context.Context) {
 		return
 	}
 
-	appDir := filepath.Join(userDir, "GoMldy")
+	appDir := filepath.Join(userDir, "Mldy Downloads")
 	if err := os.MkdirAll(appDir, 0755); err != nil {
 		log.Println("Error creating app directory:", err)
 		return
@@ -129,7 +129,7 @@ func (a *App) Download(video VideoRequest) (string, error) {
 		return r
 	}, filename)
 
-	targetDir := filepath.Join(utils.GetDownloadsFolder(), "GoMldy")
+	targetDir := filepath.Join(utils.GetDownloadsFolder(), "Mldy Downloads")
 
 	if _, err := os.Stat(targetDir); os.IsNotExist(err) {
 		err = os.MkdirAll(targetDir, 0755)
