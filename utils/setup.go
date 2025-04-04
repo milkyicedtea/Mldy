@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"golang.org/x/sys/windows"
 	"io"
 	"log"
 	"net/http"
@@ -87,7 +86,7 @@ func DownloadFFmpeg(appDir, destPath string) error {
 	if runtime.GOOS == "windows" {
 		cmd.SysProcAttr = &syscall.SysProcAttr{
 			HideWindow:    true,
-			CreationFlags: windows.CREATE_NO_WINDOW,
+			CreationFlags: 0x08000000,
 		}
 	}
 
@@ -105,7 +104,7 @@ func DownloadFFmpeg(appDir, destPath string) error {
 		if runtime.GOOS == "windows" {
 			cmd.SysProcAttr = &syscall.SysProcAttr{
 				HideWindow:    true,
-				CreationFlags: windows.CREATE_NO_WINDOW,
+				CreationFlags: 0x08000000,
 			}
 		}
 		if err := cmd.Run(); err != nil {
@@ -211,9 +210,9 @@ func getWindowsDownloadsFolder() string {
 	// call SHGetKnownFolderPath
 	r, _, _ := proc.Call(
 		uintptr(unsafe.Pointer(&folderIDDownloads)), // rfid
-		0,                              // dwFlags
-		0,                              // hToken
-		uintptr(unsafe.Pointer(&path)), // ppszPath
+		0,                                           // dwFlags
+		0,                                           // hToken
+		uintptr(unsafe.Pointer(&path)),              // ppszPath
 	)
 
 	if r != 0 {

@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/sys/windows"
 	"io"
 	"log"
 	"os"
@@ -110,7 +109,7 @@ func (a *App) Download(video VideoRequest) (string, error) {
 	)
 
 	if runtime.GOOS == "windows" {
-		metadataCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: windows.CREATE_NO_WINDOW}
+		metadataCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: 0x08000000}
 	}
 
 	metadataOutput, err := metadataCmd.Output()
@@ -165,7 +164,7 @@ func (a *App) Download(video VideoRequest) (string, error) {
 	)
 
 	if runtime.GOOS == "windows" {
-		ytdlCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: windows.CREATE_NO_WINDOW}
+		ytdlCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: 0x08000000}
 	}
 
 	ytdlOut, err := ytdlCmd.StdoutPipe()
@@ -203,7 +202,7 @@ func (a *App) Download(video VideoRequest) (string, error) {
 	//log.Println("ffmpeg cmd finished")
 
 	if runtime.GOOS == "windows" {
-		ffmpegCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: windows.CREATE_NO_WINDOW}
+		ffmpegCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true, CreationFlags: 0x08000000}
 	}
 
 	ffmpegCmd.Stdin = ytdlOut
