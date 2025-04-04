@@ -67,7 +67,9 @@ jobs:
         shell: bash
         run: |
           curl -fsSL https://bun.sh/install | bash
-          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+          echo "{$HOME}/.bun/bin" >> $GITHUB_PATH
+          export PATH="${HOME}/.bun/bin:$PATH"
+          bun --version
 
       - name: Build application
         shell: bash
