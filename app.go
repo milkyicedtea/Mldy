@@ -118,8 +118,10 @@ func (a *App) Download(video VideoRequest) (string, error) {
 		log.Println("Error fetching video metadata:", err)
 		return "", nil
 	}
+	// log.Printf("Metadata output: %+v\n", string(metadataOutput))
 
 	var videoInfo struct {
+		Id       string `json:"id"`
 		Title    string `json:"title"`
 		Uploader string `json:"uploader"`
 	}
@@ -128,7 +130,7 @@ func (a *App) Download(video VideoRequest) (string, error) {
 		return "", nil
 	}
 
-	log.Println("Metadata fetched - Title:", videoInfo.Title, "Uploader:", videoInfo.Uploader)
+	log.Println("Metadata fetched - Title:", videoInfo.Title, "Uploader:", videoInfo.Uploader, "Id:", videoInfo.Id)
 
 	filename := videoInfo.Title + ".mp3"
 	filename = strings.Map(func(r rune) rune {
@@ -182,11 +184,18 @@ func (a *App) Download(video VideoRequest) (string, error) {
 	log.Printf("a.ffmpegExecutable: %s\n", a.ffmpegExecutable)
 	ffmpegCmd := exec.Command(a.ffmpegExecutable,
 		"-i", "pipe:0",
-		"-vn",
+		"-i", fmt.Sprintf("https://img.youtube.com/vi/%s/maxresdefault.jpg", videoInfo.Id),
+		"-map", "0:a",
+		"-map", "1:v",
 		"-ab", "320k",
 		"-ar", "48000",
 		"-metadata", "title="+videoInfo.Title,
 		"-metadata", "artist="+videoInfo.Uploader,
+		"-c:v", "mjpeg",
+		"-id3v2_version", "3",
+		"-metadata:s:v", "title=Album cover",
+		"-metadata:s:v", "comment=Cover (front)",
+		"-disposition:v", "attached_pic",
 		"-f", "mp3",
 		"-y",
 		outPath,
