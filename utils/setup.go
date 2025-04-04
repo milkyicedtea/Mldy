@@ -210,9 +210,9 @@ func getWindowsDownloadsFolder() string {
 	// call SHGetKnownFolderPath
 	r, _, _ := proc.Call(
 		uintptr(unsafe.Pointer(&folderIDDownloads)), // rfid
-		0,                                           // dwFlags
-		0,                                           // hToken
-		uintptr(unsafe.Pointer(&path)),              // ppszPath
+		0,                              // dwFlags
+		0,                              // hToken
+		uintptr(unsafe.Pointer(&path)), // ppszPath
 	)
 
 	if r != 0 {
